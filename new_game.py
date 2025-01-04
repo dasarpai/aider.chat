@@ -77,11 +77,7 @@ def main():
             col = int(input("Enter the column (0, 1, or 2): "))
         else:
             row, col = find_best_move(board)
-            print(f"AI places 'O' at ({row}, {col})")
-
-        if board[row][col] != ' ':
-            print("Cell already taken. Try again.")
-            continue
+            print(f"AI plays at ({row}, {col})")
 
         board[row][col] = current_player
 

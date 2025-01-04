@@ -86,19 +86,17 @@ def game_loop():
         if bird.y <= 0 or bird.y >= SCREEN_HEIGHT - BIRD_HEIGHT:
             running = False
         for pipe in pipes:
-            if (bird.x < pipe.top_pipe.right and bird.x + BIRD_WIDTH > pipe.top_pipe.left) or \
-               (bird.x < pipe.bottom_pipe.right and bird.x + BIRD_WIDTH > pipe.bottom_pipe.left):
-                if (bird.y < pipe.top_pipe.bottom or bird.y + BIRD_HEIGHT > pipe.bottom_pipe.top):
-                    running = False
+            if bird.top_pipe.colliderect(pipe.top_pipe) or bird.bottom_pipe.colliderect(pipe.bottom_pipe):
+                running = False
 
         # Draw everything
         screen.fill(WHITE)
         screen.blit(bird_img, (bird.x, bird.y))
-        for pipe in pipes:
-            screen.blit(pipe_img, pipe)
+        pygame.draw.rect(screen, GREEN, pipe.top_pipe)
+        pygame.draw.rect(screen, GREEN, pipe.bottom_pipe)
 
         pygame.display.flip()
-        clock.tick(15)  # Slowed down the game speed
+        clock.tick(30)  # Limit the frame rate to 30 FPS
 
     pygame.quit()
 

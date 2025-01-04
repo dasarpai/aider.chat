@@ -38,6 +38,8 @@ class Bird:
         self.x = BIRD_X
         self.y = BIRD_Y
         self.velocity = 0
+        self.top_pipe = pygame.Rect(self.x, self.y - BIRD_HEIGHT, BIRD_WIDTH, BIRD_HEIGHT)
+        self.bottom_pipe = pygame.Rect(self.x, self.y, BIRD_WIDTH, BIRD_HEIGHT)
 
     def jump(self):
         self.velocity = BIRD_JUMP
@@ -45,6 +47,8 @@ class Bird:
     def update(self):
         self.velocity += BIRD_GRAVITY
         self.y += self.velocity
+        self.top_pipe = pygame.Rect(self.x, self.y - BIRD_HEIGHT, BIRD_WIDTH, BIRD_HEIGHT)
+        self.bottom_pipe = pygame.Rect(self.x, self.y, BIRD_WIDTH, BIRD_HEIGHT)
 
 # Pipe class
 class Pipe:
@@ -66,39 +70,32 @@ def game_loop():
     bird = Bird()
     pipes = [Pipe(SCREEN_WIDTH)]
 
-    running = True
-    while running:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                bird.jump()
+                pygame.quit()
+                return
 
-        # Update game objects
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            bird.jump()
+
+        screen.fill(WHITE)
         bird.update()
         for pipe in pipes:
             pipe.update()
-            if pipe.x + PIPE_WIDTH < 0:
-                pipes.pop(0)
-                pipes.append(Pipe(SCREEN_WIDTH))
+            screen.blit(pipe_img, (pipe.x, 0))
+            screen.blit(pipe_img, (pipe.x, pipe.bottom_pipe.y + PIPE_GAP))
 
-        # Check for collisions
-        if bird.y <= 0 or bird.y >= SCREEN_HEIGHT - BIRD_HEIGHT:
-            running = False
-        for pipe in pipes:
-            if bird.top_pipe.colliderect(pipe.top_pipe) or bird.bottom_pipe.colliderect(pipe.bottom_pipe):
-                running = False
+        pygame.draw.rect(screen, BLUE, bird.top_pipe)
+        pygame.draw.rect(screen, BLUE, bird.bottom_pipe)
 
-        # Draw everything
-        screen.fill(WHITE)
-        screen.blit(bird_img, (bird.x, bird.y))
-        pygame.draw.rect(screen, GREEN, pipe.top_pipe)
-        pygame.draw.rect(screen, GREEN, pipe.bottom_pipe)
+        if bird.top_pipe.colliderect(pipe.top_pipe) or bird.bottom_pipe.colliderect(pipe.bottom_pipe):
+            print("Collision detected!")
+            break
 
         pygame.display.flip()
         clock.tick(30)  # Limit the frame rate to 30 FPS
-
-    pygame.quit()
 
 if __name__ == "__main__":
     game_loop()

@@ -95,11 +95,10 @@ def game_loop():
         screen.fill(WHITE)
         screen.blit(bird_img, (bird.x, bird.y))
         for pipe in pipes:
-            pygame.draw.rect(screen, GREEN, pipe.top_pipe)
-            pygame.draw.rect(screen, GREEN, pipe.bottom_pipe)
+            screen.blit(pipe_img, pipe)
 
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(15)  # Slowed down the game speed
 
     pygame.quit()
 

@@ -7,6 +7,8 @@ Aider lets you pair program with LLMs, to edit code in your local git repository
 
 https://aider.chat/
 
+Keep in mind aider.chat has multiple modes and it not only about normal chat. Perhaps this name is given because there is another company with name "aider"
+
 ## Aider Modes 
 /chat-mode code - Aider will make changes to your code to satisfy your requests.   
 /chat-mode architect - Aider will first propose a solution, then ask if you want it to turn that proposal into edits to your files.   

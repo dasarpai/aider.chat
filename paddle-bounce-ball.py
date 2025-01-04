@@ -64,6 +64,7 @@ while True:
         sys.exit()
 
     # Ball collision with paddle
+    paddle = pygame.Rect(paddle_x, paddle_y, paddle_width, paddle_height)
     if paddle.colliderect(pygame.Rect(ball_x, ball_y, ball_radius * 2, ball_radius * 2)):
         ball_speed_y = -ball_speed_y
 
@@ -73,13 +74,15 @@ while True:
             bricks.remove(brick)
             ball_speed_y = -ball_speed_y
 
-    # Draw everything
+    # Clear screen
     screen.fill(black)
-    pygame.draw.rect(screen, white, (paddle_x, paddle_y, paddle_width, paddle_height))
-    pygame.draw.circle(screen, red, (ball_x, ball_y), ball_radius)
-    for brick in bricks:
-        pygame.draw.rect(screen, white, brick)
+
+    # Draw paddle and ball
+    pygame.draw.rect(screen, white, paddle)
+    pygame.draw.circle(screen, red, (int(ball_x), int(ball_y)), ball_radius)
 
     # Update display
     pygame.display.flip()
+
+    # Cap the frame rate
     clock.tick(60)
